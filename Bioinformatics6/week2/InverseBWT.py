@@ -43,6 +43,6 @@ def enumerate_word(word):
 if __name__ == '__main__':
 	# with open('./data/inverseBWT_test.txt') as f:
 	# 	text = f.readline().strip()
-	text = 'enwvpeoseu$llt'
+	text = 'TTCCATTGGA$'
 	print(InverseBWT(text))
 
