@@ -1,0 +1,9 @@
+.DS_Store
+ReadingNotes.md
+git.md
+git.pdf
+git.png
+seqtk/
+zmays-snps/
+_pycache_/
+*.pyc
