@@ -3,7 +3,7 @@ __author__ = 'zhangsheng'
 
 # 1 for match; 2 for down; 3 for right
 
-def LGSBackTrack(v, w):
+def LCSBackTrack(v, w):
 	S = [[0 for i in range(len(w)+1)] for j in range(len(v)+1)]
 	BackTrack = [[0 for i in range(len(w)+1)] for j in range(len(v)+1)]
 
@@ -19,16 +19,30 @@ def LGSBackTrack(v, w):
 	return BackTrack
 
 
-def OutputLGS(backtrack, v, i, j):
+def OutputLCS(backtrack, v, i, j):
 	if i==0 or j==0:
-		return 1
-	elif backtrack[i][j] == 2:
-		return OutputLGS(backtrack, v, i-1, j)
+		return
+	if backtrack[i][j] == 2:
+		return OutputLCS(backtrack, v, i-1, j)
 	elif backtrack[i][j] == 3:
-		return OutputLGS(backtrack, v, i, j-1)
-	elif backtrack[i][j] == 1:
-		OutputLGS(backtrack, v, i-1, j-1)
-		print(v[i])
+		return OutputLCS(backtrack, v, i, j-1)
 	else:
-		return 1
+		OutputLCS(backtrack, v, i-1, j-1)
+		print(v[i])
+
+
+def OutputLCS2(backtrack, v, i, j):
+	#s = []
+	s = ''
+	while i>0 and j>0:
+		if backtrack[i][j] == 1:
+			s += v[i-1]
+			#s.append(v[i-1])
+			i -= 1
+			j -= 1
+		elif backtrack[i][j] == 2:
+			i -= 1
+		else:
+			j -= 1
+	return s[::-1]
 

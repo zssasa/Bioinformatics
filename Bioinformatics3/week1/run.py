@@ -3,8 +3,14 @@ __author__ = 'zhangsheng'
 
 from DPChange import DPChange
 from Manhattan import Manhattan
-from LCS import LGSBackTrack
-from LCS import OutputLGS
+from LCS import LCSBackTrack
+#from LCS import OutputLCS
+from LCS import OutputLCS2
+from LongestPathDAG import ParseEdge
+from LongestPathDAG import Graph
+from LongestPathDAG import TopologicalSort
+from LongestPathDAG import LongestPathDAG
+from pprint import pprint
 
 # import sys
 # lines = sys.stdin.read().splitlines()
@@ -39,10 +45,31 @@ from LCS import OutputLGS
 
 # print(Manhattan(size,down,right)[size[0]][size[1]])
 
-v='AACCTTGG'
-w='ACACTGTGA'
+v='AGACTG'
+w='GTACGA'
 
-backtrack=LGSBackTrack(v,w)
+# v=lines[0]
+# w=lines[1]
+#
+backtrack=LCSBackTrack(v,w)
+#
+# # print(backtrack)
+s=OutputLCS2(backtrack,v,len(v),len(w))
+print(s)
 
-print(backtrack)
-print(OutputLGS(backtrack,v,len(v),len(w)))
+# source = 0
+# sink = 4
+# lines = ['0->1:7','0->2:4','2->3:2','1->4:1','3->4:3']
+
+
+# source = int(lines[0])
+# sink = int(lines[1])
+# edges = lines[2:]
+# G = Graph(source,sink,edges)
+# pprint(G)
+# print(G[4])
+# print(G[4] in G)
+# G_sorted = TopologicalSort(G)
+# pprint(G_sorted)
+# s = LongestPathDAG(source,sink,G_sorted)
+# print(s)
