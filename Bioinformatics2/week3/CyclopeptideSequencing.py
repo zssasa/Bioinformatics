@@ -41,12 +41,12 @@ def CyclopeptideSequencing(spectrum):
 		# str = set(str)
 		return str_
 
-	print(Consistent('TCE'))
-	print(Consistent('TCQ'))
-	print(Consistent('VAQ'))
-	print(Consistent('AQV'))
-	print(Consistent('QCV'))
-	print(Consistent('CTV'))
+    # print(Consistent('TCE'))
+    # print(Consistent('TCQ'))
+    # print(Consistent('VAQ'))
+    # print(Consistent('AQV'))
+    # print(Consistent('QCV'))
+    # print(Consistent('CTV'))
 	# print(Consistent('TCE'))
 
 	# print(LinearSpectrum('HAMNL',AAmass))

@@ -1,0 +1,1248 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<!-- Document definition -->
+<!DOCTYPE MEME[
+<!ELEMENT MEME (
+  training_set,
+  model, 
+  motifs, 
+  scanned_sites_summary?
+)>
+<!ATTLIST MEME 
+  version CDATA #REQUIRED
+  release CDATA #REQUIRED
+>
+<!-- Training-set elements -->
+<!ELEMENT training_set (alphabet, ambigs, sequence*, letter_frequencies)>
+<!ATTLIST training_set datafile CDATA #REQUIRED length CDATA #REQUIRED>
+<!ELEMENT alphabet (letter*)>
+<!ATTLIST alphabet name CDATA #REQUIRED>
+<!ELEMENT ambigs (letter*)>
+<!ELEMENT letter EMPTY>
+<!ATTLIST letter id ID #REQUIRED>
+<!ATTLIST letter symbol CDATA #REQUIRED>
+<!ATTLIST letter equals CDATA #IMPLIED>
+<!ATTLIST letter aliases CDATA #IMPLIED>
+<!ATTLIST letter complement CDATA #IMPLIED>
+<!ATTLIST letter name CDATA #IMPLIED>
+<!ATTLIST letter colour CDATA #IMPLIED>
+<!ELEMENT sequence EMPTY>
+<!ATTLIST sequence id ID #REQUIRED
+                   name CDATA #REQUIRED
+                   length CDATA #REQUIRED
+                   weight CDATA #REQUIRED
+>
+<!ELEMENT letter_frequencies (alphabet_array)>
+
+<!-- Model elements -->
+<!ELEMENT model (
+  command_line,
+  host,
+  type,
+  nmotifs,
+  evalue_threshold,
+  object_function,
+  min_width,
+  max_width,
+  minic,
+  wg,
+  ws,
+  endgaps,
+  minsites,
+  maxsites,
+  wnsites,
+  prob,
+  spmap,
+  spfuzz,
+  prior,
+  beta,
+  maxiter,
+  distance,
+  num_sequences,
+  num_positions,
+  seed,
+  seqfrac,
+  strands,
+  priors_file,
+  reason_for_stopping,
+  background_frequencies
+)>
+<!ELEMENT command_line (#PCDATA)*>
+<!ELEMENT host (#PCDATA)*>
+<!ELEMENT type (#PCDATA)*>
+<!ELEMENT nmotifs (#PCDATA)*>
+<!ELEMENT evalue_threshold (#PCDATA)*>
+<!ELEMENT object_function (#PCDATA)*>
+<!ELEMENT min_width (#PCDATA)*>
+<!ELEMENT max_width (#PCDATA)*>
+<!ELEMENT minic (#PCDATA)*>
+<!ELEMENT wg (#PCDATA)*>
+<!ELEMENT ws (#PCDATA)*>
+<!ELEMENT endgaps (#PCDATA)*>
+<!ELEMENT minsites (#PCDATA)*>
+<!ELEMENT maxsites (#PCDATA)*>
+<!ELEMENT wnsites (#PCDATA)*>
+<!ELEMENT prob (#PCDATA)*>
+<!ELEMENT spmap (#PCDATA)*>
+<!ELEMENT spfuzz (#PCDATA)*>
+<!ELEMENT prior (#PCDATA)*>
+<!ELEMENT beta (#PCDATA)*>
+<!ELEMENT maxiter (#PCDATA)*>
+<!ELEMENT distance (#PCDATA)*>
+<!ELEMENT num_sequences (#PCDATA)*>
+<!ELEMENT num_positions (#PCDATA)*>
+<!ELEMENT seed (#PCDATA)*>
+<!ELEMENT seqfrac (#PCDATA)*>
+<!ELEMENT strands (#PCDATA)*>
+<!ELEMENT priors_file (#PCDATA)*>
+<!ELEMENT reason_for_stopping (#PCDATA)*>
+<!ELEMENT background_frequencies (alphabet_array)>
+<!ATTLIST background_frequencies source CDATA #REQUIRED>
+
+<!-- Motif elements -->
+<!ELEMENT motifs (motif*)>
+<!ELEMENT motif (scores, probabilities, regular_expression?, contributing_sites)>
+<!ATTLIST motif id ID #REQUIRED
+                name CDATA #REQUIRED
+                width CDATA #REQUIRED
+                sites CDATA #REQUIRED
+                llr CDATA #REQUIRED
+                ic CDATA #REQUIRED
+                re CDATA #REQUIRED
+                bayes_threshold CDATA #REQUIRED
+                e_value CDATA #REQUIRED
+                elapsed_time CDATA #REQUIRED
+                url CDATA ""
+>
+<!ELEMENT scores (alphabet_matrix)>
+<!ELEMENT probabilities (alphabet_matrix)>
+<!ELEMENT regular_expression (#PCDATA)*>
+
+<!-- Contributing site elements -->
+<!-- Contributing sites are motif occurences found during the motif discovery phase -->
+<!ELEMENT contributing_sites (contributing_site*)>
+<!ELEMENT contributing_site (left_flank, site, right_flank)>
+<!ATTLIST contributing_site sequence_id IDREF #REQUIRED
+                          position CDATA #REQUIRED
+                          strand (plus|minus|none) 'none'
+                          pvalue CDATA #REQUIRED
+>
+<!-- The left_flank contains the sequence for 10 bases to the left of the motif start -->
+<!ELEMENT left_flank (#PCDATA)>
+<!-- The site contains the sequence for the motif instance -->
+<!ELEMENT site (letter_ref*)>
+<!-- The right_flank contains the sequence for 10 bases to the right of the motif end -->
+<!ELEMENT right_flank (#PCDATA)>
+
+<!-- Scanned site elements -->
+<!-- Scanned sites are motif occurences found during the sequence scan phase -->
+<!ELEMENT scanned_sites_summary (scanned_sites*)>
+<!ATTLIST scanned_sites_summary p_thresh CDATA #REQUIRED>
+<!ELEMENT scanned_sites (scanned_site*)>
+<!ATTLIST scanned_sites sequence_id IDREF #REQUIRED
+                        pvalue CDATA #REQUIRED
+                        num_sites CDATA #REQUIRED>
+<!ELEMENT scanned_site EMPTY>
+<!ATTLIST scanned_site  motif_id IDREF #REQUIRED
+                        strand (plus|minus|none) 'none'
+                        position CDATA #REQUIRED
+                        pvalue CDATA #REQUIRED>
+
+<!-- Utility elements -->
+<!-- A reference to a letter in the alphabet -->
+<!ELEMENT letter_ref EMPTY>
+<!ATTLIST letter_ref letter_id IDREF #REQUIRED>
+<!-- A alphabet-array contains one floating point value for each letter in an alphabet -->
+<!ELEMENT alphabet_array (value*)>
+<!ELEMENT value (#PCDATA)>
+<!ATTLIST value letter_id IDREF #REQUIRED>
+
+<!-- A alphabet_matrix contains one alphabet_array for each position in a motif -->
+<!ELEMENT alphabet_matrix (alphabet_array*)>
+
+]>
+<!-- Begin document body -->
+<MEME version="4.11.2" release="Thu Jun 16 15:11:49 2016 -0700">
+<training_set datafile="upstream500.txt" length="36">
+<alphabet name="DNA" like="dna">
+<letter id="A" symbol="A" complement="T" name="Adenine" colour="CC0000"/>
+<letter id="C" symbol="C" complement="G" name="Cytosine" colour="0000CC"/>
+<letter id="G" symbol="G" complement="C" name="Guanine" colour="FFB300"/>
+<letter id="T" symbol="T" aliases="U" complement="A" name="Thymine" colour="008000"/>
+<letter id="N" symbol="N" aliases="X." equals="ACGT" name="Any base"/>
+<letter id="V" symbol="V" equals="ACG" name="Not T"/>
+<letter id="H" symbol="H" equals="ACT" name="Not G"/>
+<letter id="D" symbol="D" equals="AGT" name="Not C"/>
+<letter id="B" symbol="B" equals="CGT" name="Not A"/>
+<letter id="M" symbol="M" equals="AC" name="Amino"/>
+<letter id="R" symbol="R" equals="AG" name="Purine"/>
+<letter id="W" symbol="W" equals="AT" name="Weak"/>
+<letter id="S" symbol="S" equals="CG" name="Strong"/>
+<letter id="Y" symbol="Y" equals="CT" name="Pyrimidine"/>
+<letter id="K" symbol="K" equals="GT" name="Keto"/>
+</alphabet>
+<sequence id="sequence_0" name="Rv1733c" length="500" weight="1.000000" />
+<sequence id="sequence_1" name="Rv1737c" length="500" weight="1.000000" />
+<sequence id="sequence_2" name="Rv1738" length="500" weight="1.000000" />
+<sequence id="sequence_3" name="Rv0079" length="500" weight="1.000000" />
+<sequence id="sequence_4" name="Rv0081" length="500" weight="1.000000" />
+<sequence id="sequence_5" name="Rv0569" length="500" weight="1.000000" />
+<sequence id="sequence_6" name="Rv0570" length="500" weight="1.000000" />
+<sequence id="sequence_7" name="Rv0571c" length="500" weight="1.000000" />
+<sequence id="sequence_8" name="Rv0572c" length="500" weight="1.000000" />
+<sequence id="sequence_9" name="Rv0574c" length="500" weight="1.000000" />
+<sequence id="sequence_10" name="Rv1734c" length="500" weight="1.000000" />
+<sequence id="sequence_11" name="Rv1812c" length="500" weight="1.000000" />
+<sequence id="sequence_12" name="Rv1813c" length="500" weight="1.000000" />
+<sequence id="sequence_13" name="Rv1996" length="500" weight="1.000000" />
+<sequence id="sequence_14" name="Rv1997" length="500" weight="1.000000" />
+<sequence id="sequence_15" name="Rv2003c" length="500" weight="1.000000" />
+<sequence id="sequence_16" name="Rv2005c" length="500" weight="1.000000" />
+<sequence id="sequence_17" name="Rv2006" length="500" weight="1.000000" />
+<sequence id="sequence_18" name="Rv2007c" length="500" weight="1.000000" />
+<sequence id="sequence_19" name="Rv2031c" length="500" weight="1.000000" />
+<sequence id="sequence_20" name="Rv2032" length="500" weight="1.000000" />
+<sequence id="sequence_21" name="Rv2623" length="500" weight="1.000000" />
+<sequence id="sequence_22" name="Rv2625c" length="500" weight="1.000000" />
+<sequence id="sequence_23" name="Rv2626c" length="500" weight="1.000000" />
+<sequence id="sequence_24" name="Rv2627c" length="500" weight="1.000000" />
+<sequence id="sequence_25" name="Rv2628" length="500" weight="1.000000" />
+<sequence id="sequence_26" name="Rv2629" length="500" weight="1.000000" />
+<sequence id="sequence_27" name="Rv2631" length="500" weight="1.000000" />
+<sequence id="sequence_28" name="Rv2830c" length="500" weight="1.000000" />
+<sequence id="sequence_29" name="Rv3129" length="500" weight="1.000000" />
+<sequence id="sequence_30" name="Rv3130c" length="500" weight="1.000000" />
+<sequence id="sequence_31" name="Rv3131" length="500" weight="1.000000" />
+<sequence id="sequence_32" name="Rv3133c" length="500" weight="1.000000" />
+<sequence id="sequence_33" name="Rv3134c" length="500" weight="1.000000" />
+<sequence id="sequence_34" name="Rv3128c" length="500" weight="1.000000" />
+<sequence id="sequence_35" name="Rv3841" length="500" weight="1.000000" />
+<letter_frequencies>
+<alphabet_array>
+<value letter_id="A">0.183</value>
+<value letter_id="C">0.317</value>
+<value letter_id="G">0.317</value>
+<value letter_id="T">0.183</value>
+</alphabet_array>
+</letter_frequencies>
+</training_set>
+<model>
+<command_line>meme upstream500.txt -dna -oc ./result4 -nostatus -time 18000 -maxsize 60000 -mod zoops -nmotifs 1 -minw 20 -maxw 20 -revcomp </command_line>
+<host>zhangshengdeMacBook-Pro.local</host>
+<type>zoops</type>
+<nmotifs>1</nmotifs>
+<evalue_threshold>inf</evalue_threshold>
+<object_function>E-value of product of p-values</object_function>
+<use_llr>0</use_llr>
+<min_width>20</min_width>
+<max_width>20</max_width>
+<wg>11</wg>
+<ws>1</ws>
+<endgaps>yes</endgaps>
+<substring>yes</substring>
+<minsites>2</minsites>
+<maxsites>36</maxsites>
+<wnsites>0.8</wnsites>
+<spmap>uni</spmap>
+<spfuzz>0.5</spfuzz>
+<prior>dirichlet</prior>
+<beta>0.01</beta>
+<maxiter>50</maxiter>
+<distance>1e-05</distance>
+<num_sequences>36</num_sequences>
+<num_positions>18000</num_positions>
+<seed>0</seed>
+<ctfrac>-1</ctfrac>
+<maxwords>-1</maxwords>
+<strands>both</strands>
+<priors_file></priors_file>
+<reason_for_stopping>Stopped because requested number of motifs (1) found.</reason_for_stopping>
+<background_frequencies source="dataset with add-one prior applied">
+<alphabet_array>
+<value letter_id="A">0.183</value>
+<value letter_id="C">0.317</value>
+<value letter_id="G">0.317</value>
+<value letter_id="T">0.183</value>
+</alphabet_array>
+</background_frequencies>
+</model>
+<motifs>
+<motif id="motif_1" name="1" width="20" sites="25" ic="21.2" re="20.3" llr="351" e_value="8.2e-028" bayes_threshold="10.5679" elapsed_time="2.494097">
+<scores>
+<alphabet_matrix>
+<alphabet_array>
+<value letter_id="A">-1129</value>
+<value letter_id="C">60</value>
+<value letter_id="G">60</value>
+<value letter_id="T">-219</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">39</value>
+<value letter_id="C">-140</value>
+<value letter_id="G">101</value>
+<value letter_id="T">-1129</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">13</value>
+<value letter_id="C">-140</value>
+<value letter_id="G">101</value>
+<value letter_id="T">-219</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">-19</value>
+<value letter_id="C">-18</value>
+<value letter_id="G">-40</value>
+<value letter_id="T">81</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">-219</value>
+<value letter_id="C">-99</value>
+<value letter_id="G">-140</value>
+<value letter_id="T">189</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">198</value>
+<value letter_id="C">-1129</value>
+<value letter_id="G">-18</value>
+<value letter_id="T">-1129</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">-119</value>
+<value letter_id="C">-1129</value>
+<value letter_id="G">134</value>
+<value letter_id="T">-61</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">-1129</value>
+<value letter_id="C">-1129</value>
+<value letter_id="G">160</value>
+<value letter_id="T">-219</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">-1129</value>
+<value letter_id="C">-1129</value>
+<value letter_id="G">166</value>
+<value letter_id="T">-1129</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">139</value>
+<value letter_id="C">60</value>
+<value letter_id="G">-298</value>
+<value letter_id="T">-1129</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">-119</value>
+<value letter_id="C">154</value>
+<value letter_id="G">-1129</value>
+<value letter_id="T">-1129</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">81</value>
+<value letter_id="C">-99</value>
+<value letter_id="G">-40</value>
+<value letter_id="T">61</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">171</value>
+<value letter_id="C">-1129</value>
+<value letter_id="G">-66</value>
+<value letter_id="T">13</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">233</value>
+<value letter_id="C">-1129</value>
+<value letter_id="G">-1129</value>
+<value letter_id="T">-119</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">161</value>
+<value letter_id="C">-40</value>
+<value letter_id="G">-66</value>
+<value letter_id="T">-1129</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">-1129</value>
+<value letter_id="C">-1129</value>
+<value letter_id="G">166</value>
+<value letter_id="T">-1129</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">-219</value>
+<value letter_id="C">-66</value>
+<value letter_id="G">-1129</value>
+<value letter_id="T">205</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">-1129</value>
+<value letter_id="C">166</value>
+<value letter_id="G">-1129</value>
+<value letter_id="T">-1129</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">-119</value>
+<value letter_id="C">118</value>
+<value letter_id="G">-1129</value>
+<value letter_id="T">13</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">-1129</value>
+<value letter_id="C">126</value>
+<value letter_id="G">-1129</value>
+<value letter_id="T">39</value>
+</alphabet_array>
+</alphabet_matrix>
+</scores>
+<probabilities>
+<alphabet_matrix>
+<alphabet_array>
+<value letter_id="A">0.000000</value>
+<value letter_id="C">0.480000</value>
+<value letter_id="G">0.480000</value>
+<value letter_id="T">0.040000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.240000</value>
+<value letter_id="C">0.120000</value>
+<value letter_id="G">0.640000</value>
+<value letter_id="T">0.000000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.200000</value>
+<value letter_id="C">0.120000</value>
+<value letter_id="G">0.640000</value>
+<value letter_id="T">0.040000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.160000</value>
+<value letter_id="C">0.280000</value>
+<value letter_id="G">0.240000</value>
+<value letter_id="T">0.320000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.040000</value>
+<value letter_id="C">0.160000</value>
+<value letter_id="G">0.120000</value>
+<value letter_id="T">0.680000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.720000</value>
+<value letter_id="C">0.000000</value>
+<value letter_id="G">0.280000</value>
+<value letter_id="T">0.000000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.080000</value>
+<value letter_id="C">0.000000</value>
+<value letter_id="G">0.800000</value>
+<value letter_id="T">0.120000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.000000</value>
+<value letter_id="C">0.000000</value>
+<value letter_id="G">0.960000</value>
+<value letter_id="T">0.040000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.000000</value>
+<value letter_id="C">0.000000</value>
+<value letter_id="G">1.000000</value>
+<value letter_id="T">0.000000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.480000</value>
+<value letter_id="C">0.480000</value>
+<value letter_id="G">0.040000</value>
+<value letter_id="T">0.000000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.080000</value>
+<value letter_id="C">0.920000</value>
+<value letter_id="G">0.000000</value>
+<value letter_id="T">0.000000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.320000</value>
+<value letter_id="C">0.160000</value>
+<value letter_id="G">0.240000</value>
+<value letter_id="T">0.280000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.600000</value>
+<value letter_id="C">0.000000</value>
+<value letter_id="G">0.200000</value>
+<value letter_id="T">0.200000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.920000</value>
+<value letter_id="C">0.000000</value>
+<value letter_id="G">0.000000</value>
+<value letter_id="T">0.080000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.560000</value>
+<value letter_id="C">0.240000</value>
+<value letter_id="G">0.200000</value>
+<value letter_id="T">0.000000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.000000</value>
+<value letter_id="C">0.000000</value>
+<value letter_id="G">1.000000</value>
+<value letter_id="T">0.000000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.040000</value>
+<value letter_id="C">0.200000</value>
+<value letter_id="G">0.000000</value>
+<value letter_id="T">0.760000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.000000</value>
+<value letter_id="C">1.000000</value>
+<value letter_id="G">0.000000</value>
+<value letter_id="T">0.000000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.080000</value>
+<value letter_id="C">0.720000</value>
+<value letter_id="G">0.000000</value>
+<value letter_id="T">0.200000</value>
+</alphabet_array>
+<alphabet_array>
+<value letter_id="A">0.000000</value>
+<value letter_id="C">0.760000</value>
+<value letter_id="G">0.000000</value>
+<value letter_id="T">0.240000</value>
+</alphabet_array>
+</alphabet_matrix>
+</probabilities>
+<regular_expression>
+[CG][GA][GA][TCG]T[AG]GGG[AC]C[ATG][AGT]A[ACG]G[TC]C[CT][CT]
+</regular_expression>
+<contributing_sites>
+<contributing_site sequence_id="sequence_20" position="363" strand="plus" pvalue="5.60e-10" >
+<left_flank>ATCGTGGCCA</left_flank>
+<site>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>CGAAGCGCGG</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_19" position="421" strand="minus" pvalue="5.60e-10" >
+<left_flank>ATCGTGGCCA</left_flank>
+<site>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>CGAAGCGCGG</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_2" position="301" strand="plus" pvalue="3.92e-09" >
+<left_flank>GGCGCCGGCT</left_flank>
+<site>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>CAATGTGGCA</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_1" position="393" strand="minus" pvalue="3.92e-09" >
+<left_flank>GGCGCCGGCT</left_flank>
+<site>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>CAATGTGGCA</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_3" position="414" strand="minus" pvalue="1.16e-08" >
+<left_flank>GACACGGACG</left_flank>
+<site>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>ATGCCAAATG</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_25" position="221" strand="plus" pvalue="1.34e-08" >
+<left_flank>GCGGAACGAC</left_flank>
+<site>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>GCCGGAAGTC</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_24" position="450" strand="minus" pvalue="1.34e-08" >
+<left_flank>GCGGAACGAC</left_flank>
+<site>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>GCCGGAAGTC</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_12" position="231" strand="minus" pvalue="1.34e-08" >
+<left_flank>ATACCTGACC</left_flank>
+<site>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>TAACAGCACC</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_17" position="436" strand="minus" pvalue="2.80e-08" >
+<left_flank>GTTGGCCGTC</left_flank>
+<site>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>ATGACCGGTG</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_16" position="426" strand="plus" pvalue="2.80e-08" >
+<left_flank>GTTGGCCGTC</left_flank>
+<site>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>ATGACCGGTG</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_26" position="202" strand="minus" pvalue="9.40e-08" >
+<left_flank>CCAGCGGGAA</left_flank>
+<site>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="T"/>
+</site>
+<right_flank>CCACCGGATC</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_31" position="387" strand="plus" pvalue="1.03e-07" >
+<left_flank>AGGAGCCGTT</left_flank>
+<site>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+</site>
+<right_flank>CCGCTGGCGA</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_30" position="409" strand="minus" pvalue="1.03e-07" >
+<left_flank>AGGAGCCGTT</left_flank>
+<site>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+</site>
+<right_flank>CCGCTGGCGA</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_33" position="405" strand="plus" pvalue="3.51e-07" >
+<left_flank>TAACGGCCCT</left_flank>
+<site>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>TGGGAGATAG</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_14" position="413" strand="minus" pvalue="3.83e-07" >
+<left_flank>TCGCCGGTGT</left_flank>
+<site>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="T"/>
+</site>
+<right_flank>CCACTGCAGG</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_21" position="388" strand="plus" pvalue="4.16e-07" >
+<left_flank>TAAGCCCGTT</left_flank>
+<site>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>CTGAGCAAAA</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_0" position="351" strand="plus" pvalue="4.92e-07" >
+<left_flank>ACACAGCAGG</left_flank>
+<site>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>TTATCCGACA</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_13" position="421" strand="plus" pvalue="5.80e-07" >
+<left_flank>TAATGCCCTT</left_flank>
+<site>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>CTGACGCGAT</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_9" position="391" strand="minus" pvalue="5.80e-07" >
+<left_flank>GGCGGCCTCG</left_flank>
+<site>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+</site>
+<right_flank>CAAGACCGCG</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_7" position="451" strand="minus" pvalue="6.27e-07" >
+<left_flank>CTCATGGCTC</left_flank>
+<site>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>TGGGCCGACT</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_6" position="116" strand="minus" pvalue="6.80e-07" >
+<left_flank>AGGCCACCAG</left_flank>
+<site>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>CTCGGGACCC</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_5" position="408" strand="minus" pvalue="6.80e-07" >
+<left_flank>AGGCCACCAG</left_flank>
+<site>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>CTCGGGACCC</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_10" position="448" strand="plus" pvalue="1.23e-06" >
+<left_flank>CAAGTCGGGG</left_flank>
+<site>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>CGGGCTCGGA</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_18" position="420" strand="plus" pvalue="2.26e-06" >
+<left_flank>ACGAACTTGA</left_flank>
+<site>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="T"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="T"/>
+</site>
+<right_flank>TTCCGGTAGG</right_flank>
+</contributing_site>
+<contributing_site sequence_id="sequence_8" position="10" strand="plus" pvalue="2.40e-06" >
+<left_flank>AACGTCGTCG</left_flank>
+<site>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="G"/>
+<letter_ref letter_id="A"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+<letter_ref letter_id="C"/>
+</site>
+<right_flank>TAGAACAACA</right_flank>
+</contributing_site>
+</contributing_sites>
+</motif>
+</motifs>
+<scanned_sites_summary p_thresh="0.0001">
+<scanned_sites sequence_id="sequence_0" pvalue="4.74e-04" num_sites="2"><scanned_site motif_id="motif_1" strand="plus" position="351" pvalue="4.92e-07"/>
+<scanned_site motif_id="motif_1" strand="plus" position="455" pvalue="1.68e-05"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_1" pvalue="3.77e-06" num_sites="2"><scanned_site motif_id="motif_1" strand="plus" position="325" pvalue="2.47e-08"/>
+<scanned_site motif_id="motif_1" strand="minus" position="393" pvalue="3.92e-09"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_2" pvalue="3.77e-06" num_sites="2"><scanned_site motif_id="motif_1" strand="plus" position="301" pvalue="3.92e-09"/>
+<scanned_site motif_id="motif_1" strand="minus" position="369" pvalue="2.47e-08"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_3" pvalue="1.11e-05" num_sites="1"><scanned_site motif_id="motif_1" strand="minus" position="414" pvalue="1.16e-08"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_4" pvalue="6.24e-01" num_sites="0"></scanned_sites>
+<scanned_sites sequence_id="sequence_5" pvalue="6.54e-04" num_sites="2"><scanned_site motif_id="motif_1" strand="minus" position="408" pvalue="6.80e-07"/>
+<scanned_site motif_id="motif_1" strand="minus" position="431" pvalue="2.31e-05"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_6" pvalue="6.54e-04" num_sites="2"><scanned_site motif_id="motif_1" strand="minus" position="116" pvalue="6.80e-07"/>
+<scanned_site motif_id="motif_1" strand="minus" position="139" pvalue="2.31e-05"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_7" pvalue="6.03e-04" num_sites="1"><scanned_site motif_id="motif_1" strand="minus" position="451" pvalue="6.27e-07"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_8" pvalue="2.31e-03" num_sites="1"><scanned_site motif_id="motif_1" strand="plus" position="10" pvalue="2.40e-06"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_9" pvalue="5.58e-04" num_sites="1"><scanned_site motif_id="motif_1" strand="minus" position="391" pvalue="5.80e-07"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_10" pvalue="1.19e-03" num_sites="1"><scanned_site motif_id="motif_1" strand="plus" position="448" pvalue="1.23e-06"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_11" pvalue="8.89e-01" num_sites="0"></scanned_sites>
+<scanned_sites sequence_id="sequence_12" pvalue="1.29e-05" num_sites="2"><scanned_site motif_id="motif_1" strand="minus" position="198" pvalue="3.10e-05"/>
+<scanned_site motif_id="motif_1" strand="minus" position="231" pvalue="1.34e-08"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_13" pvalue="5.58e-04" num_sites="2"><scanned_site motif_id="motif_1" strand="plus" position="349" pvalue="7.74e-05"/>
+<scanned_site motif_id="motif_1" strand="plus" position="421" pvalue="5.80e-07"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_14" pvalue="3.69e-04" num_sites="1"><scanned_site motif_id="motif_1" strand="minus" position="413" pvalue="3.83e-07"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_15" pvalue="9.56e-01" num_sites="0"></scanned_sites>
+<scanned_sites sequence_id="sequence_16" pvalue="2.69e-05" num_sites="2"><scanned_site motif_id="motif_1" strand="plus" position="184" pvalue="3.74e-05"/>
+<scanned_site motif_id="motif_1" strand="plus" position="426" pvalue="2.80e-08"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_17" pvalue="2.69e-05" num_sites="1"><scanned_site motif_id="motif_1" strand="minus" position="436" pvalue="2.80e-08"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_18" pvalue="2.17e-03" num_sites="1"><scanned_site motif_id="motif_1" strand="plus" position="420" pvalue="2.26e-06"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_19" pvalue="5.39e-07" num_sites="1"><scanned_site motif_id="motif_1" strand="minus" position="421" pvalue="5.60e-10"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_20" pvalue="5.39e-07" num_sites="1"><scanned_site motif_id="motif_1" strand="plus" position="363" pvalue="5.60e-10"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_21" pvalue="4.00e-04" num_sites="2"><scanned_site motif_id="motif_1" strand="plus" position="366" pvalue="8.83e-05"/>
+<scanned_site motif_id="motif_1" strand="plus" position="388" pvalue="4.16e-07"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_22" pvalue="4.41e-01" num_sites="0"></scanned_sites>
+<scanned_sites sequence_id="sequence_23" pvalue="1.02e-01" num_sites="0"></scanned_sites>
+<scanned_sites sequence_id="sequence_24" pvalue="1.29e-05" num_sites="1"><scanned_site motif_id="motif_1" strand="minus" position="450" pvalue="1.34e-08"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_25" pvalue="1.29e-05" num_sites="1"><scanned_site motif_id="motif_1" strand="plus" position="221" pvalue="1.34e-08"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_26" pvalue="9.04e-05" num_sites="1"><scanned_site motif_id="motif_1" strand="minus" position="202" pvalue="9.40e-08"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_27" pvalue="7.00e-01" num_sites="0"></scanned_sites>
+<scanned_sites sequence_id="sequence_28" pvalue="1.20e-01" num_sites="0"></scanned_sites>
+<scanned_sites sequence_id="sequence_29" pvalue="9.90e-01" num_sites="0"></scanned_sites>
+<scanned_sites sequence_id="sequence_30" pvalue="9.94e-05" num_sites="1"><scanned_site motif_id="motif_1" strand="minus" position="409" pvalue="1.03e-07"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_31" pvalue="9.94e-05" num_sites="1"><scanned_site motif_id="motif_1" strand="plus" position="387" pvalue="1.03e-07"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_32" pvalue="7.91e-01" num_sites="0"></scanned_sites>
+<scanned_sites sequence_id="sequence_33" pvalue="3.37e-04" num_sites="2"><scanned_site motif_id="motif_1" strand="plus" position="384" pvalue="5.61e-05"/>
+<scanned_site motif_id="motif_1" strand="plus" position="405" pvalue="3.51e-07"/>
+</scanned_sites>
+<scanned_sites sequence_id="sequence_34" pvalue="9.90e-01" num_sites="0"></scanned_sites>
+<scanned_sites sequence_id="sequence_35" pvalue="6.92e-01" num_sites="0"></scanned_sites>
+</scanned_sites_summary>
+</MEME>
