@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'zhangsheng'
 
+from pprint import pprint
 from collections import defaultdict
 
 def ParseEdge(line):
@@ -58,3 +59,19 @@ def LongestPathDAG(source, sink, graph):
 		else:
 			continue
 	return length_to
+
+if __name__ == '__main__':
+    source = 0
+    sink = 4
+    edges = ['0->1:7','0->2:4','2->3:2','1->4:1','3->4:3']
+    # source = int(lines[0])
+    # sink = int(lines[1])
+    # edges = lines[2:]
+    G = Graph(source,sink,edges)
+    pprint(G)
+    print(G[4])
+    print(G[4] in G)
+    G_sorted = TopologicalSort(G)
+    pprint(G_sorted)
+    s = LongestPathDAG(source,sink,G_sorted)
+    print(s)
